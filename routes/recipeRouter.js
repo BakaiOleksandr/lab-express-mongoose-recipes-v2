@@ -6,15 +6,15 @@ const chalk = require('chalk');
 //POST Create new recipe
 router.post('/', async (req, res) => {
   try {
-    const existing = await Recipe.findOne({header: req.body.header});
+    const existing = await Recipe.findOne({title: req.body.title});
     if (existing) {
-      console.log(chalk.red(`${existing.header} is already exist`));
+      console.log(chalk.red(`${existing.title} is already exist`));
       return res
         .status(400)
-        .json({error: `${existing.header} is already exist`});
+        .json({error: `${existing.title} is already exist`});
     }
     const createdRecipe = await Recipe.create({
-      header: req.body.header,
+      title: req.body.title,
       instructions: req.body.instructions,
       level: req.body.level,
       ingredients: req.body.ingredients,
@@ -40,9 +40,9 @@ router.get('/', async (req, res) => {
     const getRecipes = await Recipe.find();
     res.status(200).json(getRecipes);
     console.log(chalk.green('Get all recipes is ok \u2705'));
-    console.log(chalk.bold('List of recipes headers:'));
+    console.log(chalk.bold('List of recipes titles:'));
     getRecipes.forEach((el) => {
-      console.log(chalk.italic(el.header));
+      console.log(chalk.italic(el.title));
     });
   } catch (err) {
     console.log(chalk.red('Cannot found recipes'));
@@ -59,7 +59,7 @@ router.get('/:id', async (req, res) => {
       console.log(chalk.red(`Recipe was not found`));
       return res.status(404).json({error: 'Recipe was not found'});
     }
-    console.log(chalk.green(`${getRecipeId.header} was found`));
+    console.log(chalk.green(`${getRecipeId.title} was found`));
     res.status(200).json(getRecipeId);
   } catch (err) {
     console.log(chalk.red('Can not get recipe'));
@@ -67,7 +67,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 //UPDATE single recipe
-router.post('/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const recipeID = req.params.id;
     const updatedRecipe = await Recipe.findByIdAndUpdate(recipeID, req.body, {
@@ -78,7 +78,7 @@ router.post('/:id', async (req, res) => {
       console.log(chalk.red(`Recipe was not found`));
       return res.status(404).json({error: 'Recipe was not found'});
     }
-    console.log(chalk.green(`Recipe ${updatedRecipe.header} was updeted`));
+    console.log(chalk.green(`Recipe ${updatedRecipe.title} was updeted`));
     res.status(200).json(updatedRecipe);
   } catch (err) {
     if (err.name === 'ValidationError') {
@@ -98,8 +98,8 @@ router.delete('/:id', async (req, res) => {
       console.log(chalk.red('Recipe not found'));
       return res.status(500).json({error: 'Recipe not found'});
     }
-    console.log(chalk.green(`Recipe ${deleteRecipe.header} was deleted`));
-    res.status(200).json(deleteRecipe);
+    console.log(chalk.green(`Recipe ${deleteRecipe.title} was deleted`));
+    res.status(204).json(deleteRecipe);
   } catch (err) {
     console.log(chalk.red(`Can not delete recipe`));
     return res.status(500).json({error: err.message});

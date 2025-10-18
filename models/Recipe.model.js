@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema
 
 const recipeSchema = new Schema({
-  header: {type: String, require: true},
+  title: {type: String, require: true},
   instructions: {type: String, require: true},
   level: {
     type: String,
