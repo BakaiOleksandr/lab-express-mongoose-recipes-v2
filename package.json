@@ -20,7 +20,9 @@
   },
   "homepage": "https://github.com/ironhack-labs/lab-express-mongoose-recipes#readme",
   "dependencies": {
+    "chalk": "^4.1.2",
     "express": "^4.18.2",
+    "mongoose": "^8.19.1",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
